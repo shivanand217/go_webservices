@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package main
 
 import (
@@ -22,6 +21,7 @@ type User struct {
 	Last  string "json:last"
 }
 
+// create new user
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	NewUser := User{}
@@ -74,6 +74,3 @@ func main() {
 	http.Handle("/", routes)
 	http.ListenAndServe(":8080", nil)
 }
-=======
-// nothin
->>>>>>> ec8e8bb5b74a7c5337a377b2808dfceb78ee22d7
