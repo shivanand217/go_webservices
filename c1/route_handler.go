@@ -9,6 +9,7 @@ import (
 )
 
 type API struct {
+	// json response
 	Message string `json:"message"`
 }
 
