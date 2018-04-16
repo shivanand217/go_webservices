@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// database driver
 var database *sql.DB
 
 type User struct {
@@ -29,8 +30,11 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	NewUser.Email = r.FormValue("email")
 	NewUser.First = r.FormValue("first")
 	NewUser.Last = r.FormValue("last")
+
 	output, err := json.Marshal(NewUser)
+
 	fmt.Println(string(output))
+
 	if err != nil {
 		fmt.Println("Something went wrong!")
 	}
@@ -40,6 +44,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	fmt.Println(q)
 }
 
@@ -51,6 +56,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	id := urlParams["id"]
 	ReadUser := User{}
 	err := database.QueryRow("select * from users where user_id=?", id).Scan(&ReadUser.ID, &ReadUser.Name, &ReadUser.First, &ReadUser.Last, &ReadUser.Email)
+
 	switch {
 	case err == sql.ErrNoRows:
 		fmt.Fprintf(w, "No such user")
@@ -63,14 +69,21 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	db, err := sql.Open("mysql", "root@/social_network")
-	if err != nil {
 
+	// connect to the database
+	db, err := sql.Open("mysql", "root:21071996@tcp(127.0.0.1:3306)/social_network")
+
+	if err != nil {
+		log.Fatal(err)
+		fmt.Println("database connectivity problem")
 	}
+
 	database = db
 	routes := mux.NewRouter()
 	routes.HandleFunc("/api/user/create", CreateUser)
 	routes.HandleFunc("/api/user/read/{id:[0-9]+}", GetUser)
 	http.Handle("/", routes)
+
+	// listen to this port
 	http.ListenAndServe(":8080", nil)
 }
