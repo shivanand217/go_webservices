@@ -14,7 +14,6 @@ type API struct {
 }
 
 func Hello(w http.ResponseWriter, r *http.Request) {
-
 	// get the request path of URL
 	urlParams := mux.Vars(r)
 
