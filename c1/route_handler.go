@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	
+
 	"github.com/gorilla/mux"
 )
 
@@ -37,8 +37,9 @@ func main() {
 
 	// gorilla router
 	gorillaRoute := mux.NewRouter()
-	gorillaRoute.HandleFunc("/api/{user:[0-9]+}", Hello)
+	gorillaRoute.HandleFunc("/api/{user}", Hello)
 
 	http.Handle("/", gorillaRoute)
 	http.ListenAndServe(":8080", nil)
+
 }
