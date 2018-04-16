@@ -12,7 +12,7 @@ type API struct {
 
 func main() {
 
-	http.HandleFunc("/api", func(w http.ResponseWriter, r *.httpRequest) {
+	http.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
 
 		message := API{"Hello, world!"}
 
@@ -21,6 +21,7 @@ func main() {
 		if err != nil {
 			fmt.Println("Something went wrong!!")
 		}
+
 		fmt.Fprintf(w, string(output))
 	})
 
