@@ -21,6 +21,7 @@ type User struct {
 	Last  string "json:last"
 }
 
+// create new user
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	NewUser := User{}
