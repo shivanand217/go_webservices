@@ -52,6 +52,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 // getting user with requested id from database
 func GetUser(w http.ResponseWriter, r *http.Request) {
 
+	// we can set any info to our response Header
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("Info", "This Header is obtained with a curl request")
+
 	// mux function Vars for getting the values
 	urlParams := mux.Vars(r)
 	id := urlParams["id"]
