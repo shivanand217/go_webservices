@@ -49,7 +49,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(q)
 }
 
-// getting users from database
+// getting the requested user from database
 func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	// mux function Vars for getting the values
