@@ -78,7 +78,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	// connect to the database
 	db, err := sql.Open("mysql", "root:21071996@tcp(127.0.0.1:3306)/social_network")
 
 	if err != nil {
