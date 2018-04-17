@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 
-	
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
@@ -50,34 +49,31 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(q)
 }
 
-// getting user from database
+// getting users from database
 func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	// mux function Vars from getting the values
 	urlParams := mux.Vars(r)
 	id := urlParams["id"]
 	ReadUser := User{}
-	
-	err := database.QueryRow("select * from users where
-		user_id=?",id).Scan(&ReadUser.ID, &ReadUser.Name, &ReadUser.First,
-		&ReadUser.Last, &ReadUser.Email)
-	
+
+	err := database.QueryRow("select * from users where user_id=?", id).Scan(&ReadUser.ID, &ReadUser.Name, &ReadUser.First, &ReadUser.Last, &ReadUser.Email)
+
 	switch {
-		case err == sql.ErrNoRows:
-			fmt.Fprintf(w, "No such user")
-		
-		case err != nil:
-			log.Fatal(err)
-		
-		default:
-			// marshal the json value obtained
-			output, _ := json.Marshal(ReadUser)
-			fmt.Fprintf(w, string(output))
+	case err == sql.ErrNoRows:
+		fmt.Fprintf(w, "No such user")
+
+	case err != nil:
+		log.Fatal(err)
+
+	default:
+		// marshal the json value obtained
+		output, _ := json.Marshal(ReadUser)
+		fmt.Fprintf(w, string(output))
 	}
 }
 
 func main() {
-
 	// connect to the database
 	db, err := sql.Open("mysql", "root:21071996@tcp(127.0.0.1:3306)/social_network")
 
