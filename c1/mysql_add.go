@@ -39,8 +39,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Something went wrong!")
 	}
 
-	sql := "INSERT INTO users set user_nickname='" + NewUser.Name + "', user_first='" + NewUser.First + "', user_last='" + NewUser.Last + "', user_email='" + NewUser.Email + "'"
+	sql := "INSERT INTO users set user_nickname='" + NewUser.Name + "', user_firstname='" + NewUser.First + "', user_lastname='" + NewUser.Last + "', user_email='" + NewUser.Email + "'"
 	q, err := database.Exec(sql)
+
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -48,23 +49,29 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(q)
 }
 
+// getting user from database
 func GetUser(w http.ResponseWriter, r *http.Request) {
 
-	w.Header().Set("Pragma", "no-cache")
-
+	// mux function Vars from getting the values
 	urlParams := mux.Vars(r)
 	id := urlParams["id"]
 	ReadUser := User{}
-	err := database.QueryRow("select * from users where user_id=?", id).Scan(&ReadUser.ID, &ReadUser.Name, &ReadUser.First, &ReadUser.Last, &ReadUser.Email)
-
+	
+	err := database.QueryRow("select * from users where
+		user_id=?",id).Scan(&ReadUser.ID, &ReadUser.Name, &ReadUser.First,
+		&ReadUser.Last, &ReadUser.Email)
+	
 	switch {
-	case err == sql.ErrNoRows:
-		fmt.Fprintf(w, "No such user")
-	case err != nil:
-		log.Fatal(err)
-	default:
-		output, _ := json.Marshal(ReadUser)
-		fmt.Fprintf(w, string(output))
+		case err == sql.ErrNoRows:
+			fmt.Fprintf(w, "No such user")
+		
+		case err != nil:
+			log.Fatal(err)
+		
+		default:
+			// marshal the json value obtained
+			output, _ := json.Marshal(ReadUser)
+			fmt.Fprintf(w, string(output))
 	}
 }
 
@@ -78,9 +85,13 @@ func main() {
 		fmt.Println("database connectivity problem")
 	}
 
+	// declared globally
 	database = db
 	routes := mux.NewRouter()
+
+	// call createUser function with this route
 	routes.HandleFunc("/api/user/create", CreateUser)
+	// fetch the user
 	routes.HandleFunc("/api/user/read/{id:[0-9]+}", GetUser)
 	http.Handle("/", routes)
 
