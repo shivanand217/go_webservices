@@ -52,7 +52,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 // getting users from database
 func GetUser(w http.ResponseWriter, r *http.Request) {
 
-	// mux function Vars from getting the values
+	// mux function Vars for getting the values
 	urlParams := mux.Vars(r)
 	id := urlParams["id"]
 	ReadUser := User{}
