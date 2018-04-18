@@ -22,7 +22,7 @@ type User struct {
 	Last  string "json:last"
 }
 
-// create new user
+// API endpoint for create user
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	NewUser := User{}
@@ -49,7 +49,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(q)
 }
 
-// getting user with requested id from database
+// API endpoint for getting the requested user
 func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	// we can set any info to our response Header
@@ -78,6 +78,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
 	// connect to the database
 	db, err := sql.Open("mysql", "root:21071996@tcp(127.0.0.1:3306)/social_network")
 
